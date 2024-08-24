@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+	  <PublishAot>true</PublishAot>
+	  <InvariantGlobalization>true</InvariantGlobalization>
+	  <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+	  <IlcTrimMetadata>true</IlcTrimMetadata>
+	  <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
+	  <StackTraceSupport>false</StackTraceSupport>
+	  <IlcDisableReflection>true</IlcDisableReflection>
+	  <IlcInstructionSet>native</IlcInstructionSet>
+
+	  <OptimizationPreference>Size</OptimizationPreference>
+	  <IlcGenerateWin32Resources>false</IlcGenerateWin32Resources>
+	  <TrimUnusedDependencies>true</TrimUnusedDependencies>
+	  <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+	  <IlcDisableUnhandledExceptionExperience>true</IlcDisableUnhandledExceptionExperience>
+
+	  <TrimMode>full</TrimMode>
+
+	  <DebugType>pdbonly</DebugType>
+	  <NativeDebugSymbols>false</NativeDebugSymbols>
+	  <StripSymbols>false</StripSymbols>
+
+
+	  <IlcGenerateMstatFile>true</IlcGenerateMstatFile>
+	  <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+	  <IlcGenerateMetadataLog>true</IlcGenerateMetadataLog>
+	  <IlcDumpGeneratedIL>true</IlcDumpGeneratedIL>
+
+
+	  <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+	  <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+	  <ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
+	  <TrimmerSingleWarn>false</TrimmerSingleWarn>
+	  <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+	  <AutoreleasePoolSupport>false</AutoreleasePoolSupport>
+	  <DebuggerSupport>false</DebuggerSupport>
+	  <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+	  <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+	  <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+	  <EventSourceSupport>false</EventSourceSupport>
+	  <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+	  <UseNativeHttpHandler>true</UseNativeHttpHandler>
+	  <UseSystemResourceKeys>true</UseSystemResourceKeys>
+	  <EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>true</EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>
+	  <StartupHookSupport>true</StartupHookSupport>
+	  <EnableCppCLIHostActivation>false</EnableCppCLIHostActivation>
+	  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	  <PlatformTarget>x64</PlatformTarget>
+
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+
+
+  <Target Name="RemoveIlcSwitches" BeforeTargets="IlcCompile" DependsOnTargets="WriteIlcRspFileForCompilation">
+	  <ItemGroup>
+		  <IlcArg Remove="--runtimeknob:RUNTIME_IDENTIFIER=win-x64" />
+		  <IlcArg Remove="--resilient" />
+	  </ItemGroup>
+	  <WriteLinesToFile File="%(ManagedBinary.IlcRspFile)" Lines="@(IlcArg)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+
+  <ItemGroup>
+	  <LinkerArg Include="/opt:ref /opt:icf"></LinkerArg>
+	  <LinkerArg Include="/safeseh:no"></LinkerArg>
+	  <LinkerArg Include="/emittoolversioninfo:no"></LinkerArg>
+	  <LinkerArg Include="/emitpogophaseinfo"></LinkerArg>
+	  <LinkerArg Include="/fixed"></LinkerArg>
+	  <LinkerArg Include="/safeseh:no"></LinkerArg>
+	  <LinkerArg Include="/merge:.modules=.rdata"></LinkerArg>
+	  <LinkerArg Include="/merge:.managedcode=.text"></LinkerArg>
+	  <LinkerArg Include="/DEBUGTYPE:CV,PDATA,FIXUP" />
+  </ItemGroup>
+</Project>
